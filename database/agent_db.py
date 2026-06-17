@@ -83,7 +83,24 @@ class AgentDB:
             cursor.close()
 
     def get_agent_by_id(self, id):
-        pass
+        """
+            Returns one agent by ID, or None if not exist
+        """
+        cursor = self.conn.cursor(dictionary=True)
+
+        query = "SELECT * FROM agents WHERE id =%s;"
+
+        cursor.execute(query, (id,))
+        row = cursor.fetchone()
+
+        cursor.close()
+
+        return row
+
+
+
+
+
 
 
     def update_agent(self ,id, data):
@@ -119,5 +136,5 @@ data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
 new_agent_db = AgentDB()
-print(new_agent_db.get_all_agents())
+print(new_agent_db.get_agent_by_id(7))
 
