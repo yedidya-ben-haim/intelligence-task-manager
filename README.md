@@ -185,3 +185,4 @@ docker run -d --name intelligence-mysql -e MYSQL_ROOT_PASSWORD=1234 \
 
 ---
 
+docker run -d --name intelligence-mysql -e MYSQL_ROOT_PASSWORD=1234  -e MYSQL_DATABASE=Intelligence_db -p 3306:3306 mysql:8.0
