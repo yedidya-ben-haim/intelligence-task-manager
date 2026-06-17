@@ -158,7 +158,7 @@ class AgentDB:
 data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
-new_agent_db = AgentDB()
-print(new_agent_db.update_agent(2,data))
+# new_agent_db = AgentDB()
+# print(new_agent_db.update_agent(2,data))
 
 
