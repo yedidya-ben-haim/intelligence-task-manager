@@ -21,7 +21,6 @@ class AgentDB:
         self.conn = ConnectionDB().get_connection()
 
 
-
     def create_agent(self, data: dict):
         """
             Creates a new agent and returns the agent object.
@@ -48,13 +47,40 @@ class AgentDB:
             cursor.close()
 
 
-
-
-
-
     def get_all_agents(self):
-        pass
+        """
+            Returns a list of all agents
+        """
+        cursor = self.conn.cursor(dictionary=True)
 
+
+        query = """SELECT * FROM agents;"""
+
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+        cursor.close()
+
+        return rows
+
+
+
+
+
+
+
+        try:
+            cursor.execute(query, value)
+            self.conn.commit()
+
+            new_agent = Agent(data["name"], data["specialty"], data["agent_rank"])
+            return new_agent
+
+        except Exception as e:
+            raise KeyError(f"Unable to create a new agent, error:{e}")
+
+        finally:
+            cursor.close()
 
     def get_agent_by_id(self, id):
         pass
@@ -92,7 +118,6 @@ class AgentDB:
 data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
-new_db = AgentDB()
-NEW_Agent = new_db.create_agent(data)
-print(NEW_Agent.__dict__)
-print(NEW_Agent)
+new_agent_db = AgentDB()
+print(new_agent_db.get_all_agents())
+
