@@ -1,6 +1,7 @@
 import mysql.connector
 
 
+
 class ConnectionDB:
     """
         Responsible for connecting to the MySQL container, creating the database, and creating the tables.
@@ -36,15 +37,14 @@ class ConnectionDB:
         try:
             cursor.execute(query)
 
-            cursor.close()
-            conn.close()
 
         except Exception as e:
-            cursor.close()
-            conn.close()
             print(f"An error occurred while creating the database {e}.")
             return None
 
+        finally:
+            cursor.close()
+            conn.close()
 
     def create_tables(self):
         """
@@ -73,7 +73,7 @@ class ConnectionDB:
                                     location VARCHAR(100) NOT NULL,
                                     difficulty INT NOT NULL,
                                     importance INT NOT NULL,
-                                    status VARCHAR(50) DEFAULT 'NEW',
+                                    status ENUM('NEW', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED') DEFAULT 'NEW',
                                     risk_level VARCHAR(50) NOT NULL,
                                     assigned_agent_id INT DEFAULT NULL
                                     );
@@ -83,14 +83,19 @@ class ConnectionDB:
             cursor.execute(agents_table_query)
             cursor.execute(missions_table_query)
 
-            cursor.close()
-            conn.close()
-
 
         except Exception as e:
+            print(f"An error occurred while creating the tables {e}.")
+
+        finally:
             cursor.close()
             conn.close()
-            print(f"An error occurred while creating the tables {e}.")
+
+
+new_db = ConnectionDB()
+new_db.create_tables()
+
+
 
 
 
