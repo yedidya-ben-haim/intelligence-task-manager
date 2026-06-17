@@ -43,7 +43,7 @@ intelligence-task-manager/
 | Column Name        | Data Type      | Constraints    | Description                              |
 |--------------------|----------------|----------------|------------------------------------------|
 | id                 | PRIMARY KEY    | AUTO_INCREMENT | Unique identifier                        |
-| name               | VARCHAR(20)    | NOT NULL       | Agent name                               |
+| name               | VARCHAR(50)    | NOT NULL       | Agent name                               |
 | specialty          | VARCHAR(50)    | NOT NULL       | Field of specialization                  |
 | is_active          | BOOLEAN        | DEFAULT TRUE   | Is the agent active                      |
 | completed_missions | INT            | DEFAULT 0      | Completed missions                       |
@@ -62,8 +62,8 @@ intelligence-task-manager/
 | location          | VARCHAR(100) | NOT NULL                 | Mission location                                                          |
 | difficulty        | INT          | 1-10                     | Difficulty level                                                          |
 | importance        | INT          | 1-10                     | Level of importance                                                       |
-| status            | VARCHAR      | DEFAULT NEW              | Mission status (NEW, ASSIGNED, IN_PROGRESS, COMPLETED, FAILED, CANCELLED) |
-| risk_level        | VARCHAR      | AUTOMATICALLY CALCULATED |                                                                           |
+| status            | VARCHAR(50)  | DEFAULT NEW              | Mission status (NEW, ASSIGNED, IN_PROGRESS, COMPLETED, FAILED, CANCELLED) |
+| risk_level        | VARCHAR(50)  | AUTOMATICALLY CALCULATED |                                                                           |
 | assigned_agent_id | INT          | DEFAULT NULL             | Agent association                                                         |
 
 
