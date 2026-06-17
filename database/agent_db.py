@@ -82,6 +82,7 @@ class AgentDB:
         finally:
             cursor.close()
 
+
     def get_agent_by_id(self, id):
         """
             Returns one agent by ID, or None if not exist
@@ -98,13 +99,35 @@ class AgentDB:
         return row
 
 
+    # todo: Check ID change
+    def update_agent(self ,id, data: dict):
+        """
+            UPDATE agent for the entire row (cannot change id)
+            Return TRUE/FALSE
+        """
+        if not self.get_agent_by_id(id):
+            print("The agent was not found.")
+            return False
+
+        cursor = self.conn.cursor(dictionary=True)
+
+
+        in_part = [f"{key}=%s" for key in data]
+        in_str = ", ".join(in_part)
+        value = list(data.values())+ [id]
+
+        query = f"update agents set {in_str} where id = %s;"
+
+        cursor.execute(query, value)
+        updated = cursor.rowcount > 0
+        cursor.close()
+
+        return updated
 
 
 
 
 
-    def update_agent(self ,id, data):
-        pass
 
 
     def deactivate_agent(self,id):
@@ -136,5 +159,6 @@ data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
 new_agent_db = AgentDB()
-print(new_agent_db.get_agent_by_id(7))
+print(new_agent_db.update_agent(2,data))
+
 
