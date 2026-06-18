@@ -82,7 +82,7 @@ def create_agent(data: CreateAgent):
 
 
 @router.put("/agents/{id}")
-def update_agent(id: int, data: dict[]):
+def update_agent(id: int, data: dict):
     agent = agent_db.get_agent_by_id(id)
     if not agent:
         raise HTTPException(status_code=404, detail="agent by id not found")
