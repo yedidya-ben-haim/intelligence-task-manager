@@ -186,7 +186,31 @@ class AgentDB:
 
 
     def get_agent_performance(self, id):
-        pass
+        """
+            Returns a dictionary with the keys (completed, failed, total, success_rate)
+        """
+        agent = self.get_agent_by_id(id)
+
+        if not agent:
+            return False
+
+        completed = agent["completed_missions"]
+        failed = agent["failed_missions"]
+        total = completed + failed
+
+        if total > 0:
+            success_rate = (completed/total) * 100
+        else:
+            success_rate = 0.0
+
+        performance = {"completed":completed,
+                       "failed":failed,
+                       "total": total,
+                       "success_rate":success_rate}
+
+        return performance
+
+
 
 
     def count_active_agents(self):
@@ -202,6 +226,6 @@ data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
 new_agent_db = AgentDB()
-print(new_agent_db.increment_failed(10))
+print(new_agent_db.get_agent_performance(10))
 
 
