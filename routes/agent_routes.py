@@ -1,23 +1,23 @@
 from fastapi import APIRouter,HTTPException
 from logs.log_step import app_logger
 from database.agent_db import AgentDB
+from pydantic import BaseModel
+
+
 
 router = APIRouter()
 agent_db = AgentDB()
 
 
-@router.get("/agents")
-def get_all_agents():
-    app_logger.info("get /agents called")
-    try:
-        app_logger.info("operation agent_db.get_all_agents()")
-        all_agents = agent_db.get_all_agents()
-    except Exception as e:
-        app_logger.error("all agents not found")
-        raise HTTPException(status_code=404, detail="get /agents called failed")
+class CreateAgent(BaseModel):
 
-    app_logger.info("get /agents Successfully completed")
-    return all_agents
+
+
+class UpdateAgent(BaseModel):
+
+
+
+
 
 
 @router.get("/agents")
@@ -34,5 +34,47 @@ def get_all_agents():
     return all_agents
 
 
+@router.get("/agents/{id}")
+def get_agent_by_id(id: int):
+    app_logger.info("get /agents/{id} called")
+    try:
+        app_logger.info("operation agent_db.get_agent_by_id(id)")
+        agent = agent_db.get_agent_by_id(id)
+    except Exception as e:
+        app_logger.error("agent by id not found")
+        raise HTTPException(status_code=404, detail=f"{e}")
+    if not agent:
+        raise HTTPException(status_code=404, detail=f"agent by id not found")
+
+    app_logger.info("get /agents/{id} Successfully completed")
+    return agent
 
 
+@router.get("/agents/{id}/performance")
+def get_agent_performance(id):
+    app_logger.info("get /agents/{id}/performance called")
+    try:
+        app_logger.info("operation agent_db.get_agent_performance(id)")
+        agent = agent_db.get_agent_performance(id)
+    except Exception as e:
+        app_logger.error("agent by id not found")
+        raise HTTPException(status_code=404, detail=f"{e}")
+    if not agent:
+        raise HTTPException(status_code=404, detail=f"agent not exist")
+
+    app_logger.info("get /agents/{id}/performance Successfully completed")
+    return agent
+
+
+
+@router.post("/agents",status_code=201)
+def create_agent(data: CreateAgent):
+    pass
+
+@router.put("/agents/{id"})
+def update_agent(data: UpdateAgent):
+    pass
+
+@router.put("/agents/{id}/deactivate")
+def deactivate_agent(id):
+    pass
