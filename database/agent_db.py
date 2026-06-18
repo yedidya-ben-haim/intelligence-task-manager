@@ -78,14 +78,12 @@ class AgentDB:
 
         try:
             cursor.execute(query, (id,))
+            row = cursor.fetchone()
+            return row
         except Exception as e:
             return None
         finally:
             cursor.close()
-
-        row = cursor.fetchone()
-
-        return row
 
 
     # todo: Check ID change
@@ -100,16 +98,21 @@ class AgentDB:
 
         cursor = self.conn.cursor(dictionary=True)
 
-        # todo: check
+
         in_part = [f"{key}=%s" for key in data]
         in_str = ", ".join(in_part)
         value = list(data.values())+ [id]
 
         query = f"update agents set {in_str} where id = %s;"
 
-        cursor.execute(query, value)
-        updated = cursor.rowcount > 0
-        cursor.close()
+        try:
+            cursor.execute(query, value)
+            self.conn.commit()
+            updated = cursor.rowcount > 0
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
 
         return updated
 
@@ -147,7 +150,7 @@ class AgentDB:
 data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
-# new_agent_db = AgentDB()
-# print(new_agent_db.update_agent(2,data))
+new_agent_db = AgentDB()
+print(new_agent_db.update_agent(2,data))
 
 
