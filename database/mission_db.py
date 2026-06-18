@@ -148,6 +148,25 @@ class MissionDB:
         return updated
 
 
+    def get_open_missions_by_agent(self ,id):
+        """
+            Returns agent ASSIGNED/IN_PROGRESS missions
+        """
+        if not self.agent_db.get_agent_by_id(id):
+            return False
+
+        cursor = self.conn.cursor()
+
+        query = "SELECT * FROM missions WHERE assigned_agent_id = %s AND status IN('ASSIGNED', 'IN_PROGRESS');"
+
+        try:
+            cursor.execute(query, (id, ))
+            rows = cursor.fetchall()
+            return rows
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
 
 
 
@@ -156,7 +175,7 @@ class MissionDB:
 
 
 
-# get_open_missions_by_agent(id)
+
 # count_all_missions()
 # count_by_status(status)
 # count_open_missions()
@@ -173,4 +192,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.update_mission_status(4, "FAILED"))
+print(mission_db.get_open_missions_by_agent(1))
