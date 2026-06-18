@@ -204,8 +204,24 @@ class MissionDB:
         finally:
             cursor.close()
 
+    def count_open_missions(self):
+        """
+            Return num of open mission
+        """
+        cursor = self.conn.cursor(dictionary=True)
 
-# count_open_missions()
+        query = "SELECT COUNT(*) as count FROM missions WHERE status IN('NEW', 'ASSIGNED', 'IN_PROGRESS');"
+        try:
+            cursor.execute(query)
+            rows = cursor.fetchone()
+            count = rows["count"]
+            return count
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
+
+
 # count_critical_missions()
 # get_top_agent()
 
@@ -219,4 +235,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.count_by_status("IN_PROGRESS"))
+print(mission_db.count_open_missions())
