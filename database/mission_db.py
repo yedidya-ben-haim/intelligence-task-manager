@@ -222,8 +222,26 @@ class MissionDB:
             cursor.close()
 
 
-# count_critical_missions()
-# get_top_agent()
+    def count_critical_missions(self):
+        """
+            Return num of CRITICAL mission
+        """
+        cursor = self.conn.cursor(dictionary=True)
+
+        query = "SELECT COUNT(*) as count FROM missions WHERE risk_level = 'CRITICAL';"
+        try:
+            cursor.execute(query)
+            rows = cursor.fetchone()
+            count = rows["count"]
+            return count
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
+
+
+
+    def get_top_agent()
 
 
 data = {"title":"2",
@@ -235,4 +253,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.count_open_missions())
+print(mission_db.count_critical_missions())
