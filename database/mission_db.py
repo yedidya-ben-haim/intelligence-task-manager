@@ -1,5 +1,5 @@
 from db_connection import ConnectionDB
-
+from agent_db import AgentDB
 
 
 class Mission:
@@ -21,6 +21,7 @@ class MissionDB:
 
     def __init__(self):
         self.conn = ConnectionDB().get_connection()
+        self.agent_db = AgentDB()
 
 
     def create_mission(self, data: dict):
@@ -86,7 +87,6 @@ class MissionDB:
         return []
 
 
-
     def get_mission_by_id(self, id):
         """
             Returns one mission by ID, or None if not exist
@@ -105,27 +105,16 @@ class MissionDB:
             cursor.close()
 
 
-    # todo: Check ID change
-    def update_agent(self ,id, data: dict):
+    def assign_mission(self, m_id, a_id):
         """
-            UPDATE agent for the entire row (cannot change id)
-            Return TRUE/FALSE
+            Assigning a mission to an agent
         """
-        if not self.get_agent_by_id(id):
-            print("The agent was not found.")
-            return False
+        cursor = self.conn.cursor()
 
-        cursor = self.conn.cursor(dictionary=True)
-
-
-        in_part = [f"{key}=%s" for key in data]
-        in_str = ", ".join(in_part)
-        value = list(data.values())+ [id]
-
-        query = f"update agents set {in_str} where id = %s;"
+        query = f"update missions set assigned_agent_id = %s where id = %s;"
 
         try:
-            cursor.execute(query, value)
+            cursor.execute(query, (a_id, m_id))
             self.conn.commit()
             updated = cursor.rowcount > 0
         except Exception as e:
@@ -134,6 +123,25 @@ class MissionDB:
             cursor.close()
 
         return updated
+
+
+
+
+
+
+
+
+
+
+
+
+        # update_mission_status(id, status)
+        # get_open_missions_by_agent(id)
+        # count_all_missions()
+        # count_by_status(status)
+        # count_open_missions()
+        # count_critical_missions()
+        # get_top_agent()
 
 
 data = {"title":"2",
@@ -145,4 +153,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.get_mission_by_id(10))
+print(mission_db.assign_mission(1,3))
