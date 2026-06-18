@@ -66,14 +66,14 @@ class MissionDB:
             cursor.close()
 
 
-    def get_all_agents(self):
+    def get_all_missions(self):
         """
-            Returns a list of all agents
+            Returns a list of all missions
         """
         cursor = self.conn.cursor(dictionary=True)
 
 
-        query = """SELECT * FROM agents;"""
+        query = """SELECT * FROM missions;"""
         try:
             cursor.execute(query)
             rows = cursor.fetchall()
@@ -84,6 +84,7 @@ class MissionDB:
         if rows:
             return rows
         return []
+
 
 
     def get_agent_by_id(self, id):
@@ -144,4 +145,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.create_mission(data).__dict__)
+print(mission_db.get_all_missions())
