@@ -211,7 +211,6 @@ class AgentDB:
         return performance
 
 
-
     def count_active_agents(self):
         """
             Returns the number of active agents

@@ -221,7 +221,6 @@ class MissionDB:
         finally:
             cursor.close()
 
-
     def count_critical_missions(self):
         """
             Return num of CRITICAL mission
@@ -240,8 +239,29 @@ class MissionDB:
             cursor.close()
 
 
+    def get_top_agent(self):
+        """
+           Return the agent with the highest completed_missions
+        """
+        cursor = self.conn.cursor(dictionary=True)
 
-    def get_top_agent()
+        query = "SELECT * FROM agents ORDER BY completed_missions DESC;"
+
+        try:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            row = rows[0]
+            return row
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
+
+
+
+
+
+
 
 
 data = {"title":"2",
@@ -253,4 +273,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.count_critical_missions())
+print(mission_db.get_top_agent())
