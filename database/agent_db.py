@@ -192,7 +192,10 @@ class AgentDB:
         agent = self.get_agent_by_id(id)
 
         if not agent:
-            return False
+            return {"completed":0,
+                       "failed":0,
+                       "total": 0,
+                       "success_rate":0.0}
 
         completed = agent["completed_missions"]
         failed = agent["failed_missions"]
@@ -212,9 +215,22 @@ class AgentDB:
 
 
 
-
     def count_active_agents(self):
-        pass
+        """
+            Returns the number of active agents
+        """
+
+        cursor = self.conn.cursor(dictionary=True)
+
+        query = "SELECT COUNT(*) as count FROM agents WHERE is_active = 1;"
+        try:
+            cursor.execute(query)
+            row = cursor.fetchone()
+            return row["count"]
+        except Exception as e:
+            return 0
+        finally:
+            cursor.close()
 
 
 
@@ -226,6 +242,6 @@ data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
 new_agent_db = AgentDB()
-print(new_agent_db.get_agent_performance(10))
+print(new_agent_db.count_active_agents())
 
 
