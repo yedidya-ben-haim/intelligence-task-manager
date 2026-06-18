@@ -87,13 +87,13 @@ class MissionDB:
 
 
 
-    def get_agent_by_id(self, id):
+    def get_mission_by_id(self, id):
         """
-            Returns one agent by ID, or None if not exist
+            Returns one mission by ID, or None if not exist
         """
         cursor = self.conn.cursor(dictionary=True)
 
-        query = "SELECT * FROM agents WHERE id =%s;"
+        query = "SELECT * FROM missions WHERE id =%s;"
 
         try:
             cursor.execute(query, (id,))
@@ -145,4 +145,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.get_all_missions())
+print(mission_db.get_mission_by_id(10))
