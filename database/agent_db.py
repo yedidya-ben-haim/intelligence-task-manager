@@ -163,7 +163,26 @@ class AgentDB:
 
 
     def increment_failed(self, id):
-        pass
+        """
+           Updates the number of failed missions.
+       """
+        if not self.get_agent_by_id(id):
+            return False
+
+        cursor = self.conn.cursor()
+
+        query = f"update agents set failed_missions = failed_missions + 1 where id = %s;"
+
+        try:
+            cursor.execute(query, (id,))
+            self.conn.commit()
+            updated = cursor.rowcount > 0
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
+
+        return updated
 
 
     def get_agent_performance(self, id):
@@ -183,6 +202,6 @@ data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
 new_agent_db = AgentDB()
-print(new_agent_db.increment_completed(2))
+print(new_agent_db.increment_failed(10))
 
 
