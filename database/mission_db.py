@@ -187,17 +187,22 @@ class MissionDB:
         finally:
             cursor.close()
 
-    def count_by_status(status):
+    def count_by_status(self, status):
         """
-
-        :return:
+            Counts missions by a specific status
         """
+        cursor = self.conn.cursor(dictionary=True)
 
-
-
-
-
-
+        query = "SELECT COUNT(*) as count FROM missions WHERE status = %s;"
+        try:
+            cursor.execute(query, (status,))
+            rows = cursor.fetchone()
+            count = rows["count"]
+            return count
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
 
 
 # count_open_missions()
@@ -214,4 +219,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.count_all_missions())
+print(mission_db.count_by_status("IN_PROGRESS"))
