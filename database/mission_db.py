@@ -1,3 +1,5 @@
+from itertools import count
+
 from db_connection import ConnectionDB
 from agent_db import AgentDB
 
@@ -168,6 +170,28 @@ class MissionDB:
         finally:
             cursor.close()
 
+    def count_all_missions(self):
+        """
+            Total missions
+        """
+        cursor = self.conn.cursor(dictionary=True)
+
+        query = "SELECT COUNT(*) as count FROM missions;"
+        try:
+            cursor.execute(query)
+            rows = cursor.fetchone()
+            count = rows["count"]
+            return count
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
+
+    def count_by_status(status):
+        """
+
+        :return:
+        """
 
 
 
@@ -176,8 +200,6 @@ class MissionDB:
 
 
 
-# count_all_missions()
-# count_by_status(status)
 # count_open_missions()
 # count_critical_missions()
 # get_top_agent()
@@ -192,4 +214,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.get_open_missions_by_agent(1))
+print(mission_db.count_all_missions())
