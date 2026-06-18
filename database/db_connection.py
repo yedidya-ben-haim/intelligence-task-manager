@@ -29,7 +29,8 @@ class ConnectionDB:
         """
             Creates Intelligence_db if it does not exist
         """
-        conn = self.get_connection()
+        conn = mysql.connector.connect(user=self.user, password=self.password,
+                              host=self.host)
         cursor = conn.cursor()
 
         query = """CREATE DATABASE IF NOT EXISTS Intelligence_db"""
@@ -67,16 +68,16 @@ class ConnectionDB:
         # todo: difficulty, importance INT 1-10
 
         missions_table_query = """CREATE TABLE IF NOT EXISTS missions (
-                                    id INT AUTO_INCREMENT PRIMARY KEY,
-                                    title VARCHAR(50) NOT NULL,
-                                    description TEXT NOT NULL,
-                                    location VARCHAR(100) NOT NULL,
-                                    difficulty INT NOT NULL,
-                                    importance INT NOT NULL,
-                                    status ENUM('NEW', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED') DEFAULT 'NEW',
-                                    risk_level VARCHAR(50) NOT NULL,
-                                    assigned_agent_id INT DEFAULT NULL
-                                    );
+                                        id INT AUTO_INCREMENT PRIMARY KEY,
+                                        title VARCHAR(50) NOT NULL,
+                                        description TEXT NOT NULL,
+                                        location VARCHAR(100) NOT NULL,
+                                        difficulty INT CHECK(difficulty BETWEEN 1 AND 10),
+                                        importance INT CHECK(importance BETWEEN 1 AND 10),
+                                        status ENUM('NEW', 'ASSIGNED', 'IN_PROGRESS', 'COMPLETED', 'FAILED', 'CANCELLED') DEFAULT 'NEW',
+                                        risk_level VARCHAR(50) NOT NULL,
+                                        assigned_agent_id INT DEFAULT NULL
+                                        );
                                 """
 
         try:
@@ -93,7 +94,7 @@ class ConnectionDB:
 
 
 new_db = ConnectionDB()
-new_db.create_tables()
+new_db.create_database()
 
 
 

@@ -55,32 +55,17 @@ class AgentDB:
 
 
         query = """SELECT * FROM agents;"""
-
-        cursor.execute(query)
-        rows = cursor.fetchall()
-
-        cursor.close()
-
-        return rows
-
-
-
-
-
-
-
         try:
-            cursor.execute(query, value)
-            self.conn.commit()
-
-            new_agent = Agent(data["name"], data["specialty"], data["agent_rank"])
-            return new_agent
-
+            cursor.execute(query)
+            rows = cursor.fetchall()
         except Exception as e:
-            raise KeyError(f"Unable to create a new agent, error:{e}")
-
+            return []
         finally:
             cursor.close()
+        if rows:
+            return rows
+        return []
+
 
 
     def get_agent_by_id(self, id):
@@ -91,10 +76,14 @@ class AgentDB:
 
         query = "SELECT * FROM agents WHERE id =%s;"
 
-        cursor.execute(query, (id,))
-        row = cursor.fetchone()
+        try:
+            cursor.execute(query, (id,))
+        except Exception as e:
+            return None
+        finally:
+            cursor.close()
 
-        cursor.close()
+        row = cursor.fetchone()
 
         return row
 
@@ -111,7 +100,7 @@ class AgentDB:
 
         cursor = self.conn.cursor(dictionary=True)
 
-
+        # todo: check
         in_part = [f"{key}=%s" for key in data]
         in_str = ", ".join(in_part)
         value = list(data.values())+ [id]
