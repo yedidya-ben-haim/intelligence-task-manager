@@ -67,7 +67,6 @@ class AgentDB:
         return []
 
 
-
     def get_agent_by_id(self, id):
         """
             Returns one agent by ID, or None if not exist
@@ -123,7 +122,30 @@ class AgentDB:
 
 
     def deactivate_agent(self,id):
-        pass
+        """
+            Updating agent is_active=False.
+        """
+        if not self.get_agent_by_id(id):
+            return False
+
+        cursor = self.conn.cursor()
+
+        query = f"update agents set is_active = FALSE where id = %s;"
+
+        try:
+            cursor.execute(query, (id,))
+            self.conn.commit()
+            updated = cursor.rowcount > 0
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
+
+        return updated
+
+
+
+
 
 
     def increment_completed(self, id):
@@ -151,6 +173,6 @@ data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
 new_agent_db = AgentDB()
-print(new_agent_db.update_agent(2,data))
+print(new_agent_db.deactivate_agent(1))
 
 

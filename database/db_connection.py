@@ -93,8 +93,10 @@ class ConnectionDB:
             conn.close()
 
 
-new_db = ConnectionDB()
-new_db.create_database()
+
+# todo: delete
+# new_db = ConnectionDB()
+# new_db.create_database()
 
 
 
