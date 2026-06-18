@@ -1,4 +1,4 @@
-from db_connection import ConnectionDB
+from database.db_connection import ConnectionDB
 
 
 
@@ -55,13 +55,9 @@ class AgentDB:
 
 
         query = """SELECT * FROM agents;"""
-        try:
-            cursor.execute(query)
-            rows = cursor.fetchall()
-        except Exception as e:
-            return []
-        finally:
-            cursor.close()
+
+        cursor.execute(query)
+        rows = cursor.fetchall()
         if rows:
             return rows
         return []
