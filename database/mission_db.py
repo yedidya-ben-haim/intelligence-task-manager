@@ -263,14 +263,14 @@ class MissionDB:
 
 
 
-
-data = {"title":"2",
-        "description":"no",
-        "location":"localy",
-        "difficulty":5,
-        "importance":8,
-        "status":"IN_PROGRESS",
-        "assigned_agent_id":2}
-
-mission_db = MissionDB()
-print(mission_db.get_top_agent())
+# todo: delete
+# data = {"title":"2",
+#         "description":"no",
+#         "location":"localy",
+#         "difficulty":5,
+#         "importance":8,
+#         "status":"IN_PROGRESS",
+#         "assigned_agent_id":2}
+#
+# mission_db = MissionDB()
+# print(mission_db.get_top_agent())
