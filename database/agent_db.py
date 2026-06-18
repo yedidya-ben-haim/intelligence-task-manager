@@ -192,10 +192,7 @@ class AgentDB:
         agent = self.get_agent_by_id(id)
 
         if not agent:
-            return {"completed":0,
-                       "failed":0,
-                       "total": 0,
-                       "success_rate":0.0}
+            return False
 
         completed = agent["completed_missions"]
         failed = agent["failed_missions"]
@@ -236,12 +233,12 @@ class AgentDB:
 
 
 
-
-
-data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
-
-
-new_agent_db = AgentDB()
-print(new_agent_db.count_active_agents())
+# todo: delete
+#
+# data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
+#
+#
+# new_agent_db = AgentDB()
+# print(new_agent_db.count_active_agents())
 
 
