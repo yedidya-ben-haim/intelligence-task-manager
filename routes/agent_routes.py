@@ -10,10 +10,12 @@ agent_db = AgentDB()
 
 
 class CreateAgent(BaseModel):
-
-
+    name: str
+    agent_rank : str
+    specialty: str
 
 class UpdateAgent(BaseModel):
+    name:str
 
 
 
@@ -31,7 +33,7 @@ def get_all_agents():
         raise HTTPException(status_code=404, detail="get /agents called failed")
 
     app_logger.info("get /agents Successfully completed")
-    return all_agents
+    return {"message":"all agent" , "data":all_agents}
 
 
 @router.get("/agents/{id}")
@@ -44,14 +46,14 @@ def get_agent_by_id(id: int):
         app_logger.error("agent by id not found")
         raise HTTPException(status_code=404, detail=f"{e}")
     if not agent:
-        raise HTTPException(status_code=404, detail=f"agent by id not found")
+        raise HTTPException(status_code=404, detail="agent by id not found")
 
     app_logger.info("get /agents/{id} Successfully completed")
-    return agent
+    return {"message":"agent", "data":agent}
 
 
 @router.get("/agents/{id}/performance")
-def get_agent_performance(id):
+def get_agent_performance(id: int):
     app_logger.info("get /agents/{id}/performance called")
     try:
         app_logger.info("operation agent_db.get_agent_performance(id)")
@@ -60,21 +62,40 @@ def get_agent_performance(id):
         app_logger.error("agent by id not found")
         raise HTTPException(status_code=404, detail=f"{e}")
     if not agent:
-        raise HTTPException(status_code=404, detail=f"agent not exist")
+        raise HTTPException(status_code=404, detail="agent not exist")
 
     app_logger.info("get /agents/{id}/performance Successfully completed")
-    return agent
-
+    return {"message":"agent", "data":agent}
 
 
 @router.post("/agents",status_code=201)
 def create_agent(data: CreateAgent):
-    pass
+    data = data.model_dump()
+    vailed_agent_rank = ["Junior", "Senior", "Commander"]
 
-@router.put("/agents/{id"})
+    if data.get("agent_rank") not in vailed_agent_rank:
+        HTTPException(status_code=400, detail="Invalid rank")
+
+    if not data:
+        HTTPException(status_code=422, detail="no data")
+
+    agent = agent_db.create_agent(data)
+    return agent.__dict__
+
+
+
+@router.put("/agents/{id}")
 def update_agent(data: UpdateAgent):
     pass
 
+
+
 @router.put("/agents/{id}/deactivate")
-def deactivate_agent(id):
-    pass
+def deactivate_agent(id: int):
+    agent = agent_db.get_agent_by_id(id)
+    if not agent:
+        raise HTTPException(status_code=404, detail="agent by id not found")
+
+    agent_db.deactivate_agent(id)
+    return {"message":"is_active=False", "data":""}
+

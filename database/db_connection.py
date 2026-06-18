@@ -65,7 +65,6 @@ class ConnectionDB:
                                 );
                         """
 
-        # todo: difficulty, importance INT 1-10
 
         missions_table_query = """CREATE TABLE IF NOT EXISTS missions (
                                         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -94,9 +93,6 @@ class ConnectionDB:
 
 
 
-# todo: delete
-# new_db = ConnectionDB()
-# new_db.create_database()
 
 
 

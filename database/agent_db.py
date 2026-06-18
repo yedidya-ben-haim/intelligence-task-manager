@@ -2,7 +2,6 @@ from database.db_connection import ConnectionDB
 
 
 
-# todo: Improvement
 class Agent:
     def __init__(self, name, specialty, agent_rank):
         self.name = name
@@ -81,7 +80,6 @@ class AgentDB:
             cursor.close()
 
 
-    # todo: Check ID change
     def update_agent(self ,id, data: dict):
         """
             UPDATE agent for the entire row (cannot change id)
@@ -223,17 +221,3 @@ class AgentDB:
             return 0
         finally:
             cursor.close()
-
-
-
-
-
-# todo: delete
-#
-# data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
-#
-#
-# new_agent_db = AgentDB()
-# print(new_agent_db.count_active_agents())
-
-

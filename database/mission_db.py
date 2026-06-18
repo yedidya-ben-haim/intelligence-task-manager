@@ -1,7 +1,7 @@
 from itertools import count
 
-from db_connection import ConnectionDB
-from agent_db import AgentDB
+from database.db_connection import ConnectionDB
+from database.agent_db import AgentDB
 
 
 class Mission:
@@ -261,16 +261,3 @@ class MissionDB:
 
 
 
-
-
-# todo: delete
-# data = {"title":"2",
-#         "description":"no",
-#         "location":"localy",
-#         "difficulty":5,
-#         "importance":8,
-#         "status":"IN_PROGRESS",
-#         "assigned_agent_id":2}
-#
-# mission_db = MissionDB()
-# print(mission_db.get_top_agent())
