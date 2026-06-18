@@ -116,11 +116,6 @@ class AgentDB:
         return updated
 
 
-
-
-
-
-
     def deactivate_agent(self,id):
         """
             Updating agent is_active=False.
@@ -144,12 +139,27 @@ class AgentDB:
         return updated
 
 
-
-
-
-
     def increment_completed(self, id):
-        pass
+        """
+            Updates the number of missions completed.
+        """
+        if not self.get_agent_by_id(id):
+            return False
+
+        cursor = self.conn.cursor()
+
+        query = f"update agents set completed_missions = completed_missions + 1 where id = %s;"
+
+        try:
+            cursor.execute(query, (id,))
+            self.conn.commit()
+            updated = cursor.rowcount > 0
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
+
+        return updated
 
 
     def increment_failed(self, id):
@@ -173,6 +183,6 @@ data = {"name":"avi", "specialty":"plenner", "agent_rank":"Junior"}
 
 
 new_agent_db = AgentDB()
-print(new_agent_db.deactivate_agent(1))
+print(new_agent_db.increment_completed(2))
 
 
