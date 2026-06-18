@@ -125,6 +125,27 @@ class MissionDB:
         return updated
 
 
+    def update_mission_status(self, id, status):
+        """
+            Used for any mission status change.
+        """
+        if not self.get_mission_by_id(id):
+            return False
+
+        cursor = self.conn.cursor()
+
+        query = f"update missions set status = %s where id = %s;"
+
+        try:
+            cursor.execute(query, (status,id))
+            self.conn.commit()
+            updated = cursor.rowcount > 0
+        except Exception as e:
+            return False
+        finally:
+            cursor.close()
+
+        return updated
 
 
 
@@ -135,13 +156,12 @@ class MissionDB:
 
 
 
-        # update_mission_status(id, status)
-        # get_open_missions_by_agent(id)
-        # count_all_missions()
-        # count_by_status(status)
-        # count_open_missions()
-        # count_critical_missions()
-        # get_top_agent()
+# get_open_missions_by_agent(id)
+# count_all_missions()
+# count_by_status(status)
+# count_open_missions()
+# count_critical_missions()
+# get_top_agent()
 
 
 data = {"title":"2",
@@ -153,4 +173,4 @@ data = {"title":"2",
         "assigned_agent_id":2}
 
 mission_db = MissionDB()
-print(mission_db.assign_mission(1,3))
+print(mission_db.update_mission_status(4, "FAILED"))
