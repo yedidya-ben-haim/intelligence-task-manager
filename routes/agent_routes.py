@@ -73,9 +73,9 @@ def create_agent(data: CreateAgent):
     data = data.model_dump()
     vailed_agent_rank = ["Junior", "Senior", "Commander"]
 
+    print("hi")
     if data.get("agent_rank") not in vailed_agent_rank:
         HTTPException(status_code=400, detail="Invalid rank")
-
     if not data:
         HTTPException(status_code=422, detail="no data")
 
@@ -83,10 +83,17 @@ def create_agent(data: CreateAgent):
     return agent.__dict__
 
 
-
 @router.put("/agents/{id}")
-def update_agent(data: UpdateAgent):
-    pass
+def update_agent(id: int, data: UpdateAgent):
+    data = data.model_dump()
+    agent = agent_db.get_agent_by_id(id)
+    if not agent:
+        raise HTTPException(status_code=404, detail="agent by id not found")
+    if not data:
+        HTTPException(status_code=422, detail="no data")
+
+    agent_db.update_agent(id, data)
+    return {"message": "Updated", "data": agent}
 
 
 
